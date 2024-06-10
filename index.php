@@ -3,43 +3,16 @@ require_once 'vendor/autoload.php';
 
 use App\Wallet;
 use App\TransactionManager;
-use GuzzleHttp\Client;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/');
-$dotenv->load();
-$dotenv->required([
-    'CRYPTO_API_KEY',
-]);
-
-if (empty('data/crypto.json')) {
-    $client = new Client();
-    $baseUrl = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest';
-    $parameters = [
-        'start' => '1',
-        'limit' => '20',
-        'convert' => 'USD'
-    ];
-
-    $response = $client->request(
-        'GET',
-        $baseUrl,
-        [
-            'query' => $parameters,
-            'headers' => [
-                'Accepts' => 'application/json',
-                'X-CMC_PRO_API_KEY' => $_ENV['CRYPTO_API_KEY']
-            ]
-        ]
-    );
-    $response->getStatusCode();
-
-    file_put_contents('data/crypto.json', $response->getBody());
-}
 
 $resource = json_decode(file_get_contents('data/crypto.json'));
+if (empty($resource)) {
+    exit("run 'php import.php' to fetch data.\n");
+}
 $cryptoCurrencies = $resource->data;
+
 $wallet = new Wallet();
 
 while (true) {
