@@ -5,8 +5,6 @@ use App\Wallet;
 use App\TransactionManager;
 use GuzzleHttp\Client;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\TableCell;
-use Symfony\Component\Console\Helper\TableCellStyle;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/');
@@ -66,26 +64,7 @@ while (true) {
 
     switch ($action) {
         case 1: //Show list of top currencies
-            $outputCrypto = new ConsoleOutput();
-            $tableCryptoCurrencies = new Table($outputCrypto);
-            $tableCryptoCurrencies
-                ->setHeaders(['Index', 'Name', 'Symbol', 'Price']);
-            $rows = (array_map(function (int $index, stdClass $cryptoCurrency): array {
-                return [
-                    $index + 1,
-                    $cryptoCurrency->name,
-                    $cryptoCurrency->symbol,
-                    new TableCell(
-                        number_format($cryptoCurrency->quote->USD->price, 4),
-                        ['style' => new TableCellStyle(['align' => 'right',])]
-                    ),
-
-                ];
-            }, array_keys($cryptoCurrencies), $cryptoCurrencies));
-
-            $tableCryptoCurrencies->setRows($rows);
-            $tableCryptoCurrencies->setStyle('box-double');
-            $tableCryptoCurrencies->render();
+            TransactionManager::displayList($cryptoCurrencies);
             break;
         case 2: //Wallet
             TransactionManager::viewWallet($wallet);
