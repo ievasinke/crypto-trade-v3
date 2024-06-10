@@ -31,6 +31,44 @@ class Wallet implements JsonSerializable
         return $this->portfolio;
     }
 
+    public function addCrypto(string $symbol, float $quantity, float $price): void
+    {
+        $totalCost = $price * $quantity;
+
+        if ($totalCost > $this->balance) {
+            throw new \Exception("Not enough balance to buy $symbol.");
+        }
+
+        if (isset($this->portfolio[$symbol])) {
+            $this->portfolio[$symbol]['quantity'] += $quantity;
+            $this->portfolio[$symbol]['totalAmount'] += $totalCost;
+        } else {
+            $this->portfolio[$symbol] = [
+                'quantity' => $quantity,
+                'totalAmount' => $totalCost
+            ];
+        }
+        $this->balance -= $totalCost;
+        $this->save();
+    }
+
+    public function sellCrypto(string $symbol, float $quantity, float $price): void
+    {
+        if (!isset($this->portfolio[$symbol]) || $this->portfolio[$symbol]['quantity'] < $quantity) {
+            throw new \Exception("Not enough quantity to sell $symbol.");
+        }
+
+        $this->portfolio[$symbol]['quantity'] -= $quantity;
+        $totalAmount = $price * $quantity;
+
+        if ($this->portfolio[$symbol]['quantity'] === 0) {
+            unset($this->portfolio[$symbol]);
+        }
+
+        $this->balance += $totalAmount;
+        $this->save();
+    }
+
     private function load(): void
     {
         $walletData = json_decode(file_get_contents($this->walletFile));

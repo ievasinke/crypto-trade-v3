@@ -2,22 +2,12 @@
 require_once 'vendor/autoload.php';
 
 use App\Wallet;
+use App\TransactionManager;
 use GuzzleHttp\Client;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Helper\TableCellStyle;
 use Symfony\Component\Console\Output\ConsoleOutput;
-
-/**
- * Using https://coinmarketcap.com/ API, create an application that allow you to
- * - List top crypto currencies
- * - [OPTIONAL] search crypto currency by its ticking symbol
- * - Purchase crypto currency using virtual money (start with 1000$ as base)
- * - Sell crypto currency
- * - Display current state of your wallet
- * (based on transaction history, that is saved in .json file)
- * - Display transaction list, what trades you have made
- */
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/');
 $dotenv->load();
@@ -52,7 +42,7 @@ if (empty('data/crypto.json')) {
 
 $resource = json_decode(file_get_contents('data/crypto.json'));
 $cryptoCurrencies = $resource->data;
-
+$wallet = new Wallet();
 
 while (true) {
     $outputTasks = new ConsoleOutput();
@@ -75,7 +65,7 @@ while (true) {
     }
 
     switch ($action) {
-        case 1:
+        case 1: //Show list of top currencies
             $outputCrypto = new ConsoleOutput();
             $tableCryptoCurrencies = new Table($outputCrypto);
             $tableCryptoCurrencies
@@ -98,8 +88,7 @@ while (true) {
             $tableCryptoCurrencies->render();
             break;
         case 2: //Wallet
-            $wallet = new Wallet();
-            echo $wallet->getBalance() . PHP_EOL;
+            TransactionManager::viewWallet($wallet);
             break;
         case 3: //Sell
             break;
