@@ -1,19 +1,11 @@
 <?php
 require_once 'vendor/autoload.php';
 
+use App\CryptoCurrency;
 use App\Wallet;
 use App\TransactionManager;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\ConsoleOutput;
-
-
-$resource = json_decode(file_get_contents('data/crypto.json'));
-if (empty($resource)) {
-    exit("run 'php import.php' to fetch data.\n");
-}
-$cryptoCurrencies = $resource->data;
-
-$wallet = new Wallet();
 
 while (true) {
     $outputTasks = new ConsoleOutput();
@@ -23,9 +15,9 @@ while (true) {
         ->setRows([
             ['1', 'Show list of top currencies'],
             ['2', 'Wallet'],
-            ['3', 'Sell'],
-            ['4', 'Buy'],
-            ['5', 'Display transaction list'], //based on transaction history, that is saved in .json file
+            ['3', 'Buy'],
+            ['4', 'Sell'],
+            ['5', 'Display transaction list'],
             ['0', 'Exit'],
         ])
         ->render();
@@ -34,19 +26,23 @@ while (true) {
     if ($action === 0) {
         break;
     }
-
+    $cryptoCurrencies = CryptoCurrency::load();
     switch ($action) {
         case 1: //Show list of top currencies
+
             TransactionManager::displayList($cryptoCurrencies);
             break;
         case 2: //Wallet
+            $wallet = new Wallet();
             TransactionManager::viewWallet($wallet);
             break;
-        case 3: //Sell
+        case 3: //Buy
+
             break;
-        case 4: //Buy
+        case 4: //Sell
             break;
         case 5: //Display transaction list
+            //based on transaction history, that is saved in .json file
             break;
         default:
             break;

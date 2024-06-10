@@ -16,13 +16,13 @@ class TransactionManager
         $tableCryptoCurrencies
             ->setHeaders(['Index', 'Name', 'Symbol', 'Price']);
         $tableCryptoCurrencies
-            ->setRows(array_map(function (int $index, $cryptoCurrency): array {
+            ->setRows(array_map(function (int $index, CryptoCurrency $cryptoCurrency): array {
                 return [
                     $index + 1,
-                    $cryptoCurrency->name,
-                    $cryptoCurrency->symbol,
+                    $cryptoCurrency->getName(),
+                    $cryptoCurrency->getSymbol(),
                     new TableCell(
-                        number_format($cryptoCurrency->quote->USD->price, 4),
+                        number_format($cryptoCurrency->getPrice(), 4),
                         ['style' => new TableCellStyle(['align' => 'right',])]
                     ),
 
