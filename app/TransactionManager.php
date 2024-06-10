@@ -6,6 +6,7 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Helper\TableCellStyle;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use function Clue\StreamFilter\append;
 
 class TransactionManager
 {
@@ -48,5 +49,51 @@ class TransactionManager
             }, array_keys($wallet->getPortfolio()), $wallet->getPortfolio()));
         $tableWallet->setStyle('box');
         $tableWallet->render();
+        $total = number_format($wallet->getBalance(), 2);
+        echo "You have \$$total in your wallet\n";
+    }
+
+    public static function buyCrypto(array $cryptoCurrencies, Wallet $wallet, string $transactionFile): void
+    {
+        $index = (int)readline("Enter the index of the crypto currency to buy: ") - 1;
+        $quantity = (float)readline("Enter the quantity: ");
+        $type = 'buy';
+
+        if (isset($cryptoCurrencies[$index])) {
+            $currency = $cryptoCurrencies[$index];
+            $price = $currency->getPrice();
+            $totalAmount = $price * $quantity;
+
+            try {
+                $wallet->addCrypto($currency->getSymbol(), $quantity, $price);
+            } catch (\Exception $e) {
+                echo $e->getMessage();
+            }
+
+            self::logTransaction(
+                'buy',
+                $currency->getName(),
+                $currency->getSymbol(),
+                $quantity,
+                $price,
+            );
+            echo "You bought {$currency->getName()} for \$$totalAmount\n";
+        } else {
+            echo "Invalid index.";
+        }
+    }
+
+    private static function logTransaction(
+        string $type,
+        string $currency,
+        string $symbol,
+        float  $quantity,
+        float  $price,
+        string $transactionsFile = 'data/transactions.json'
+    ): void
+    {
+        $transactions = file_exists($transactionsFile) ? json_decode(file_get_contents($transactionsFile)) : [];
+        $transactions[] = new Transaction($type, $currency, $symbol, $quantity, $price);
+        file_put_contents($transactionsFile, json_encode($transactions), FILE_APPEND);
     }
 }

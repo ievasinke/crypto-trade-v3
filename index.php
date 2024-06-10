@@ -7,6 +7,9 @@ use App\TransactionManager;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
+$cryptoCurrencies = CryptoCurrency::load();
+$wallet = new Wallet();
+
 while (true) {
     $outputTasks = new ConsoleOutput();
     $tableActivities = new Table($outputTasks);
@@ -26,18 +29,17 @@ while (true) {
     if ($action === 0) {
         break;
     }
-    $cryptoCurrencies = CryptoCurrency::load();
+
     switch ($action) {
         case 1: //Show list of top currencies
 
             TransactionManager::displayList($cryptoCurrencies);
             break;
         case 2: //Wallet
-            $wallet = new Wallet();
             TransactionManager::viewWallet($wallet);
             break;
         case 3: //Buy
-
+            TransactionManager::buyCrypto($cryptoCurrencies, $wallet, 'data/transactions.json');
             break;
         case 4: //Sell
             break;

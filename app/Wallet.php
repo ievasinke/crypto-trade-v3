@@ -71,14 +71,14 @@ class Wallet implements JsonSerializable
 
     private function load(): void
     {
-        $walletData = json_decode(file_get_contents($this->walletFile));
-        $this->balance = $walletData->balance;
-        $this->portfolio = $walletData->portfolio;
+        $walletData = json_decode(file_get_contents($this->walletFile), true);
+        $this->balance = $walletData['balance'];
+        $this->portfolio = $walletData['portfolio'];
     }
 
     private function save(): void
     {
-        file_put_contents($this->walletFile, json_encode($this));
+        file_put_contents($this->walletFile, json_encode($this, JSON_PRETTY_PRINT));
     }
 
     public function jsonSerialize(): array
