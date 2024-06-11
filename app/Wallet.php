@@ -32,7 +32,7 @@ class Wallet implements JsonSerializable
         return $this->portfolio;
     }
 
-    public function addCrypto(string $symbol, float $quantity, float $price): void
+    public function addCurrency(string $symbol, float $quantity, float $price): void
     {
         $totalCost = $price * $quantity;
 
@@ -40,7 +40,7 @@ class Wallet implements JsonSerializable
             throw new Exception("Not enough balance to buy $symbol.");
         }
 
-        if (isset($this->portfolio[$symbol])) {
+        if (isset($this->portfolio[$symbol]) && $this->portfolio[$symbol]['quantity'] > 0) {
             $this->portfolio[$symbol]['quantity'] += $quantity;
             $this->portfolio[$symbol]['totalAmount'] += $totalCost;
         } else {

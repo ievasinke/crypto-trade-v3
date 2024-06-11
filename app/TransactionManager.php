@@ -69,7 +69,7 @@ class TransactionManager
             $totalAmount = $price * $quantity;
 
             try {
-                $wallet->addCrypto($currency->getSymbol(), $quantity, $price);
+                $wallet->addCurrency($currency->getSymbol(), $quantity, $price);
                 self::logTransaction(
                     $type,
                     $currency->getName(),
