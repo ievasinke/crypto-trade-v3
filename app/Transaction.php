@@ -26,6 +26,36 @@ class Transaction implements \JsonSerializable
         $this->date = date('Y-m-d H:i:s');
     }
 
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getSymbol(): string
+    {
+        return $this->symbol;
+    }
+
+    public function getQuantity(): float
+    {
+        return $this->quantity;
+    }
+
+    public function getPrice(): float
+    {
+        return $this->price;
+    }
+
+    public function getDate(): string
+    {
+        return $this->date;
+    }
+
     public function jsonSerialize(): array
     {
         return [

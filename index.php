@@ -1,4 +1,5 @@
 <?php
+
 require_once 'vendor/autoload.php';
 
 use App\CryptoCurrency;
@@ -32,20 +33,19 @@ while (true) {
 
     switch ($action) {
         case 1: //Show list of top currencies
-
             TransactionManager::displayList($cryptoCurrencies);
             break;
         case 2: //Wallet
             TransactionManager::viewWallet($wallet);
             break;
         case 3: //Buy
-            TransactionManager::buy($cryptoCurrencies, $wallet, 'data/transactions.json');
+            TransactionManager::buy($cryptoCurrencies, $wallet);
             break;
         case 4: //Sell
-            TransactionManager::sell($cryptoCurrencies, $wallet, 'data/transactions.json');
+            TransactionManager::sell($cryptoCurrencies, $wallet);
             break;
         case 5: //Display transaction list
-            //based on transaction history, that is saved in .json file
+            TransactionManager::displayTransactionList('data/transactions.json');
             break;
         default:
             break;

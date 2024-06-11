@@ -61,6 +61,7 @@ class Wallet implements JsonSerializable
 
         $this->portfolio[$symbol]['quantity'] -= $quantity;
         $totalAmount = $price * $quantity;
+        $this->portfolio[$symbol]['totalAmount'] -= $totalAmount;
 
         if ($this->portfolio[$symbol]['quantity'] === 0) {
             unset($this->portfolio[$symbol]);

@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 class TransactionManager
 {
-    public static function displayList($cryptoCurrencies): void
+    public static function displayList(array $cryptoCurrencies): void
     {
         $outputCrypto = new ConsoleOutput();
         $tableCryptoCurrencies = new Table($outputCrypto);
@@ -35,9 +35,10 @@ class TransactionManager
 
     public static function viewWallet(Wallet $wallet): void
     {
-        $portfolios = array_filter($wallet->getPortfolio(), function ($items): bool {
+        $portfolios = array_filter($wallet->getPortfolio(), function (array $items): bool {
             return $items['quantity'] > 0;
         });
+
         $output = new ConsoleOutput();
         $tableWallet = new Table($output);
         $tableWallet
@@ -56,8 +57,9 @@ class TransactionManager
         echo "You have \$$total in your wallet\n";
     }
 
-    public static function buy(array $cryptoCurrencies, Wallet $wallet, string $transactionFile): void
+    public static function buy(array $cryptoCurrencies, Wallet $wallet): void
     {
+
         self::displayList($cryptoCurrencies);
         $index = (int)readline("Enter the index of the crypto currency to buy: ") - 1;
         $quantity = (float)readline("Enter the quantity: ");
@@ -86,7 +88,7 @@ class TransactionManager
         echo "Invalid index.\n";
     }
 
-    public static function sell(array $cryptoCurrencies, Wallet $wallet, string $transactionFile): void
+    public static function sell(array $cryptoCurrencies, Wallet $wallet): void
     {
         self::viewWallet($wallet);
         $symbol = strtoupper((string)readline("Enter the symbol of the currency: "));
@@ -111,16 +113,40 @@ class TransactionManager
         echo "Invalid symbol.\n";
     }
 
+    public static function displayTransactionList(string $transactionsFile): void
+    {
+        $transactions = file_exists($transactionsFile) ? json_decode(file_get_contents($transactionsFile)) : [];
+        $output = new ConsoleOutput();
+        $tableTransactions = new Table($output);
+        $tableTransactions
+            ->setHeaders(['Type', 'Name', 'Symbol', 'Quantity', 'Price', 'Date']);
+        $tableTransactions
+            ->setRows(array_map(function (\stdClass $transaction): array {
+                return [
+                    $transaction->type,
+                    $transaction->name,
+                    $transaction->symbol,
+                    $transaction->quantity,
+                    number_format($transaction->price, 2),
+                    $transaction->date,
+                ];
+            }, $transactions));
+        $tableTransactions->setStyle('box');
+        $tableTransactions->render();
+    }
+
     private static function logTransaction(
         string $type,
         string $currency,
         string $symbol,
         float  $quantity,
-        float  $price,
-        string $transactionsFile = 'data/transactions.json'
+        float  $price
     ): void
     {
-        $transactions = file_exists($transactionsFile) ? json_decode(file_get_contents($transactionsFile)) : [];
+        $transactionsFile = 'data/transactions.json';
+        $transactions = file_exists($transactionsFile)
+            ? json_decode(file_get_contents($transactionsFile))
+            : [];
         $transactions[] = new Transaction($type, $currency, $symbol, $quantity, $price);
         file_put_contents($transactionsFile, json_encode($transactions, JSON_PRETTY_PRINT));
     }
