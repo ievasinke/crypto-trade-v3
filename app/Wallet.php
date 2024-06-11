@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Exception;
 use JsonSerializable;
 
 class Wallet implements JsonSerializable
@@ -36,7 +37,7 @@ class Wallet implements JsonSerializable
         $totalCost = $price * $quantity;
 
         if ($totalCost > $this->balance) {
-            throw new \Exception("Not enough balance to buy $symbol.");
+            throw new Exception("Not enough balance to buy $symbol.");
         }
 
         if (isset($this->portfolio[$symbol])) {
@@ -52,10 +53,10 @@ class Wallet implements JsonSerializable
         $this->save();
     }
 
-    public function sellCrypto(string $symbol, float $quantity, float $price): void
+    public function sellCurrency(string $symbol, float $quantity, float $price): void
     {
         if (!isset($this->portfolio[$symbol]) || $this->portfolio[$symbol]['quantity'] < $quantity) {
-            throw new \Exception("Not enough quantity to sell $symbol.");
+            throw new Exception("Not enough quantity to sell $symbol.");
         }
 
         $this->portfolio[$symbol]['quantity'] -= $quantity;

@@ -39,9 +39,10 @@ while (true) {
             TransactionManager::viewWallet($wallet);
             break;
         case 3: //Buy
-            TransactionManager::buyCrypto($cryptoCurrencies, $wallet, 'data/transactions.json');
+            TransactionManager::buy($cryptoCurrencies, $wallet, 'data/transactions.json');
             break;
         case 4: //Sell
+            TransactionManager::sell($cryptoCurrencies, $wallet, 'data/transactions.json');
             break;
         case 5: //Display transaction list
             //based on transaction history, that is saved in .json file
