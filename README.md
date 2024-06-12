@@ -1,4 +1,4 @@
-# Crypto Traiding app
+# Crypto Trading app
 
 This application allows you to manage a virtual portfolio of cryptocurrencies using data from the CoinMarketCap API. You
 can view the top cryptocurrencies, buy and sell them using virtual money, and track your transaction history.
