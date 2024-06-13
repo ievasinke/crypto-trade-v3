@@ -91,6 +91,12 @@ class TransactionManager
     public static function sell(array $cryptoCurrencies, Wallet $wallet): void
     {
         self::viewWallet($wallet);
+
+        if (count($wallet->getPortfolio()) === 0) {
+            echo "There are no items in your wallet.\n";
+            return;
+        }
+
         $symbol = strtoupper((string)readline("Enter the symbol of the currency: "));
         $quantity = (float)readline("Enter the quantity to sell: ");
         $type = 'sell';
