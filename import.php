@@ -3,7 +3,7 @@ require_once 'vendor/autoload.php';
 
 use GuzzleHttp\Client;
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/');
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 $dotenv->required([
     'CRYPTO_API_KEY',

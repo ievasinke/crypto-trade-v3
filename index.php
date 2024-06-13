@@ -2,13 +2,13 @@
 
 require_once 'vendor/autoload.php';
 
-use App\CryptoCurrency;
+use App\CoingecoApiClient;
 use App\Wallet;
 use App\TransactionManager;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-$cryptoCurrencies = CryptoCurrency::load();
+$cryptoCurrencies = CoingecoApiClient::load();
 $wallet = new Wallet();
 
 while (true) {
