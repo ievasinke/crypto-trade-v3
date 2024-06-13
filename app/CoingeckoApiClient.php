@@ -2,7 +2,7 @@
 
 namespace App;
 
-class CoingecoApiClient implements ApiClient
+class CoingeckoApiClient implements ApiClient
 {
     public static function load(string $cryptoFile = 'data/crypto.json'): array
     {

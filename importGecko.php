@@ -7,7 +7,7 @@ use GuzzleHttp\Client;
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 $dotenv->required([
-    'COIN_GEKO_API_KEY',
+    'COIN_GECKO_API_KEY',
 ]);
 
 $client = new Client();
@@ -24,7 +24,7 @@ $response = $client->request(
         'query' => $parameters,
         'headers' => [
             'accept' => 'application/json',
-            'x-cg-demo-api-key' => $_ENV['COIN_GEKO_API_KEY'],
+            'x-cg-demo-api-key' => $_ENV['COIN_GECKO_API_KEY'],
         ],
     ]);
 

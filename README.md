@@ -23,7 +23,7 @@ Install dependencies using Composer:
 ``` composer install  ```  
 Create a `.env` file in the root directory and add your CoinMarketCap API key:  
 ``` CRYPTO_API_KEY=your_api_key_here ```  
-``` COINGECO_API_KEY=your_api_key_here ```
+``` COINGECKO_API_KEY=your_api_key_here ```
 
 ### Usage
 
@@ -32,13 +32,12 @@ Create a `.env` file in the root directory and add your CoinMarketCap API key:
 To fetch the latest cryptocurrency data, you can use either of the following scripts depending on the API provider you
 want to use:
 
+- For CoinGecko (default/current setup):  
+  ``` php importGecko.php ```
 - For CoinMarketCap:  
   ``` php import.php ```
-- For CoinGecko:  
-  ``` php importGeco.php ```
 
 #### Run the application
 
-1. Set your API client in your index.php for load method
-2. To start the application, run:  
-   ``` php index.php ```
+To start the application, run:  
+``` php index.php ```
