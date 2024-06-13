@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Mailgun\Exception;
+use Exception;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Helper\TableCellStyle;
@@ -80,7 +80,7 @@ class TransactionManager
                     $price,
                 );
                 echo "You bought {$currency->getName()} for \$$totalAmount\n";
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 echo $e->getMessage() . PHP_EOL;
             }
             return;
@@ -121,20 +121,21 @@ class TransactionManager
 
     public static function displayTransactionList(string $transactionsFile): void
     {
-        $transactions = file_exists($transactionsFile) ? json_decode(file_get_contents($transactionsFile)) : [];
+        $transactionsData = file_exists($transactionsFile) ? json_decode(file_get_contents($transactionsFile)) : [];
+        $transactions = array_map('App\Transaction::deserialize', $transactionsData);
         $output = new ConsoleOutput();
         $tableTransactions = new Table($output);
         $tableTransactions
             ->setHeaders(['Type', 'Name', 'Symbol', 'Quantity', 'Price', 'Date']);
         $tableTransactions
-            ->setRows(array_map(function (\stdClass $transaction): array {
+            ->setRows(array_map(function (Transaction $transaction): array {
                 return [
-                    $transaction->type,
-                    $transaction->name,
-                    $transaction->symbol,
-                    $transaction->quantity,
-                    number_format($transaction->price, 2),
-                    $transaction->date,
+                    $transaction->getType(),
+                    $transaction->getName(),
+                    $transaction->getSymbol(),
+                    $transaction->getQuantity(),
+                    number_format($transaction->getPrice(), 2),
+                    $transaction->getDate(),
                 ];
             }, $transactions));
         $tableTransactions->setStyle('box');

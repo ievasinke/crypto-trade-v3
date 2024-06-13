@@ -12,18 +12,19 @@ class Transaction implements \JsonSerializable
     private string $date;
 
     public function __construct(
-        string $type,
-        string $name,
-        string $symbol,
-        float  $quantity,
-        float  $price)
+        string  $type,
+        string  $name,
+        string  $symbol,
+        float   $quantity,
+        float   $price,
+        ?string $date)
     {
         $this->type = $type;
         $this->name = $name;
         $this->symbol = $symbol;
         $this->quantity = $quantity;
         $this->price = $price;
-        $this->date = date('Y-m-d H:i:s');
+        $this->date = $date ?? date('Y-m-d H:i:s');
     }
 
     public function getType(): string
@@ -66,5 +67,17 @@ class Transaction implements \JsonSerializable
             'price' => $this->price,
             'date' => $this->date
         ];
+    }
+
+    public function deserialize($object): Transaction
+    {
+        return new self(
+            $object->type,
+            $object->name,
+            $object->symbol,
+            $object->quantity,
+            $object->price,
+            $object->date
+        );
     }
 }
