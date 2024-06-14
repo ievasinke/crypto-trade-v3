@@ -21,7 +21,7 @@ Navigate to the project directory:
 ```  cd crypto-trade-v3  ```  
 Install dependencies using Composer:  
 ``` composer install  ```  
-Create a `.env` file in the root directory and add your CoinMarketCap API key:  
+Create a `.env` file in the root directory from `.env.example` file and add your API keys:  
 ``` CRYPTO_API_KEY=your_api_key_here ```  
 ``` COINGECKO_API_KEY=your_api_key_here ```
 
