@@ -16,9 +16,9 @@ APIs. You can view the top cryptocurrencies, buy and sell them using virtual mon
 ### Installation
 
 Clone the repository:  
-```  git clone https://github.com/ievasinke/crypto-trade-v2.git  ```  
+```  git clone https://github.com/ievasinke/crypto-trade-v3.git  ```  
 Navigate to the project directory:  
-```  cd crypto-trade-v2  ```  
+```  cd crypto-trade-v3  ```  
 Install dependencies using Composer:  
 ``` composer install  ```  
 Create a `.env` file in the root directory and add your CoinMarketCap API key:  
