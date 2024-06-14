@@ -7,5 +7,5 @@ interface ApiClient
     /**
      * @return array<CryptoCurrency>
      */
-    public static function load(string $cryptoFile = 'data/crypto.json'): array;
+    public static function load(): array;
 }
