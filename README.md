@@ -24,7 +24,7 @@ Install dependencies using Composer:
 Create a `.env` file in the root directory from the `.env.example` file and add your API keys:  
 ``` CRYPTO_API_KEY=your_api_key_here ```  
 ``` COINGECKO_API_KEY=your_api_key_here ```  
-Create the database schema:
+Create the database schema:  
 ``` php setup.php ```
 
 ### Usage
